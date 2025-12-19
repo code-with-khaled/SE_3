@@ -1,10 +1,7 @@
 package com.se.bankapp.controllers;
 
 import com.se.bankapp.facade.BankingFacade;
-import com.se.bankapp.models.Account;
-import com.se.bankapp.models.AccountGroup;
-import com.se.bankapp.models.AccountType;
-import com.se.bankapp.models.TransactionRecord;
+import com.se.bankapp.models.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +16,7 @@ public class BankController {
         this.facade = facade;
     }
 
-    // Accounts operations
+    // Accounts endpoints
     // Create account
     @PostMapping("/accounts")
     public Account createAccount(@RequestParam String type, @RequestParam double balance) {
@@ -117,6 +114,22 @@ public class BankController {
     @PostMapping("/groups/{groupId}/withdraw")
     public List<Account> withdrawGroup(@PathVariable Long groupId, @RequestParam double amount) {
         return facade.withdrawGroup(groupId, amount);
+    }
+
+    // Tickets endpoints
+    @PostMapping("/tickets")
+    public SupportTicket createTicket(@RequestParam Long accountId, @RequestParam String subject, @RequestParam String description) {
+        return facade.createTicket(accountId, subject, description);
+    }
+
+    @GetMapping("/tickets/{accountId}")
+    public List<SupportTicket> getTickets(@PathVariable Long accountId) {
+        return facade.getTickets(accountId);
+    }
+
+    @PostMapping("/tickets/{ticketId}/advance")
+    public SupportTicket advanceTicket(@PathVariable Long ticketId) {
+        return facade.advanceTicket(ticketId);
     }
 }
 

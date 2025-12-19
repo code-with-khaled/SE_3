@@ -1,11 +1,9 @@
 package com.se.bankapp.facade;
 
-import com.se.bankapp.models.Account;
-import com.se.bankapp.models.AccountGroup;
-import com.se.bankapp.models.AccountType;
-import com.se.bankapp.models.TransactionRecord;
+import com.se.bankapp.models.*;
 import com.se.bankapp.services.AccountService;
 import com.se.bankapp.services.AccountGroupService;
+import com.se.bankapp.services.SupportService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,10 +13,12 @@ public class BankingFacade {
 
     private final AccountService accountService;
     private final AccountGroupService groupService;
+    private final SupportService supportService;
 
-    public BankingFacade(AccountService accountService, AccountGroupService groupService) {
+    public BankingFacade(AccountService accountService, AccountGroupService groupService, SupportService supportService) {
         this.accountService = accountService;
         this.groupService = groupService;
+        this.supportService = supportService;
     }
 
     // Account operations
@@ -85,5 +85,18 @@ public class BankingFacade {
 
     public List<Account> withdrawGroup(Long groupId, double amount) {
         return groupService.withdrawFromGroup(groupId, amount);
+    }
+
+    // Ticket operations
+    public SupportTicket createTicket(Long accountId, String subject, String description) {
+        return supportService.createTicket(accountId, subject, description);
+    }
+
+    public List<SupportTicket> getTickets(Long accountId) {
+        return supportService.getTicketsByAccount(accountId);
+    }
+
+    public SupportTicket advanceTicket(Long ticketId) {
+        return supportService.advanceTicket(ticketId);
     }
 }

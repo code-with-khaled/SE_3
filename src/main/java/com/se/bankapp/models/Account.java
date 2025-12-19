@@ -1,6 +1,5 @@
 package com.se.bankapp.models;
 
-import com.se.bankapp.decorators.PremiumAccountDecorator;
 import com.se.bankapp.strategies.InterestStrategy;
 import com.se.bankapp.strategies.InvestmentInterest;
 import com.se.bankapp.strategies.LoanInterest;

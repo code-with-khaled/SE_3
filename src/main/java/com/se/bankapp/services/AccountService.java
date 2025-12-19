@@ -172,6 +172,7 @@ public class AccountService {
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));
         acc.setPremium(true);
         repo.save(acc);
+        notificationService.notify(acc, "UPGRADED_TO_PREMIUM", 0);
         return acc;
     }
 
