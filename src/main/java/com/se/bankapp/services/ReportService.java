@@ -17,14 +17,17 @@ public class ReportService {
         this.auditLogReport = auditLogReport;
     }
 
+    // Get daily report
     public String getDailyReport() {
         return dailyTransactionReport.generateReport();
     }
 
+    // Get account summary report
     public String getAccountSummaryReport() {
         return accountSummaryReport.generateReport();
     }
 
+    // Get audit log
     public String getAuditLog() {
         return auditLogReport.generateReport();
     }

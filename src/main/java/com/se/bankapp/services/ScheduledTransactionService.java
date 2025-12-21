@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ScheduledTransactionService {
@@ -26,13 +27,23 @@ public class ScheduledTransactionService {
     @Scheduled(fixedRate = 3000)
     public void processScheduledTransactions() {
         Instant now = Instant.now();
-        List<ScheduledTransaction> due = scheduledTransactionRepository.findByScheduledAtBeforeAndExecutedFalse(now);
+        List<ScheduledTransaction> due = scheduledTransactionRepository.findByScheduledAtBeforeAndExecutedFalseAndCancelledFalse(now);
 
         for (ScheduledTransaction st : due) {
-            // Perform Transaction
-            switch (st.getType()) {
-                case "DEPOSIT" -> accountService.deposit(st.getAccountId(), st.getAmount());
-                case "WITHDRAW" -> accountService.withdraw(st.getAccountId(), st.getAmount());
+
+            try {
+                // Perform Transaction
+                switch (st.getType()) {
+                    case "DEPOSIT" -> accountService.deposit(st.getAccountId(), st.getAmount());
+                    case "WITHDRAW" -> accountService.withdraw(st.getAccountId(), st.getAmount());
+                }
+            } catch(Exception e) {
+                // log a failed transaction
+                transactionRecordRepository.save(new TransactionRecord(
+                        st.getAccountId(),
+                        "FAILED: " + e.toString(),
+                        st.getAmount()
+                ));
             }
 
             if (st.isRecurring()) {
@@ -47,5 +58,13 @@ public class ScheduledTransactionService {
 
     public ScheduledTransaction scheduleTransaction(ScheduledTransaction st) {
         return scheduledTransactionRepository.save(st);
+    }
+
+    public void cancelScheduledTransaction(Long id) {
+        ScheduledTransaction st = scheduledTransactionRepository.findById(id)
+                                                                .orElseThrow(() -> new NoSuchElementException("Scheduled transaction not found"));
+        st.setCancelled(true);
+
+        scheduledTransactionRepository.save(st);
     }
 }

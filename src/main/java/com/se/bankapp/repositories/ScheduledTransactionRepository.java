@@ -7,5 +7,5 @@ import java.time.Instant;
 import java.util.List;
 
 public interface ScheduledTransactionRepository extends JpaRepository<ScheduledTransaction, Long> {
-    List<ScheduledTransaction> findByScheduledAtBeforeAndExecutedFalse(Instant now);
+    List<ScheduledTransaction> findByScheduledAtBeforeAndExecutedFalseAndCancelledFalse(Instant now);
 }

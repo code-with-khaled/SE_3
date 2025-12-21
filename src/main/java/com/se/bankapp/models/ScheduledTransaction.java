@@ -22,6 +22,7 @@ public class ScheduledTransaction {
     private long intervalSeconds;
 
     private boolean executed = false;
+    private boolean cancelled;
 
     // --- Constructors ---
     public ScheduledTransaction() {}
@@ -59,6 +60,10 @@ public class ScheduledTransaction {
         return executed;
     }
 
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
     // --- Setters ---
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
@@ -86,5 +91,8 @@ public class ScheduledTransaction {
 
     public void setExecuted(boolean executed) {
         this.executed = executed;
+    }
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

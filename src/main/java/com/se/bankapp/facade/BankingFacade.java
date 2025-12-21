@@ -1,9 +1,7 @@
 package com.se.bankapp.facade;
 
 import com.se.bankapp.models.*;
-import com.se.bankapp.services.AccountService;
-import com.se.bankapp.services.AccountGroupService;
-import com.se.bankapp.services.SupportService;
+import com.se.bankapp.services.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,11 +12,15 @@ public class BankingFacade {
     private final AccountService accountService;
     private final AccountGroupService groupService;
     private final SupportService supportService;
+    private final ScheduledTransactionService scheduledTransactionService;
+    private final ReportService reportService;
 
-    public BankingFacade(AccountService accountService, AccountGroupService groupService, SupportService supportService) {
+    public BankingFacade(AccountService accountService, AccountGroupService groupService, SupportService supportService, ScheduledTransactionService scheduledTransactionService, ReportService reportService) {
         this.accountService = accountService;
         this.groupService = groupService;
         this.supportService = supportService;
+        this.scheduledTransactionService = scheduledTransactionService;
+        this.reportService = reportService;
     }
 
     // Account operations
@@ -98,5 +100,27 @@ public class BankingFacade {
 
     public SupportTicket advanceTicket(Long ticketId) {
         return supportService.advanceTicket(ticketId);
+    }
+
+    // Scheduled Transaction operations
+    public ScheduledTransaction scheduleTransaction(ScheduledTransaction st) {
+        return scheduledTransactionService.scheduleTransaction(st);
+    }
+
+    public void cancelScheduledTransaction(Long id) {
+        scheduledTransactionService.cancelScheduledTransaction(id);
+    }
+
+    // Report operations
+    public String getDailyReport() {
+        return reportService.getDailyReport();
+    }
+
+    public String getAccountSummaryReport() {
+        return reportService.getAccountSummaryReport();
+    }
+
+    public String getAuditLog() {
+        return reportService.getAuditLog();
     }
 }

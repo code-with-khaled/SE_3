@@ -14,15 +14,19 @@ public class ReportController {
         this.service = service;
     }
 
+    // Get daily reports
     @GetMapping("/daily")
     public String getDailyReport() {
         return service.getDailyReport();
     }
 
+    // Get summary reports
     @GetMapping("/summary")
     public String getAccountSummaryReport() {
         return service.getAccountSummaryReport();
     }
+
+    // Get audit log
     @GetMapping("/audit")
     public String getAuditLog() {
         return service.getAuditLog();

@@ -134,5 +134,36 @@ public class BankController {
     public SupportTicket advanceTicket(@PathVariable Long ticketId) {
         return facade.advanceTicket(ticketId);
     }
-}
 
+    // --- Scheduled transaction endpoints ---
+    // Create Scheduled transaction
+    @PostMapping("/scheduled")
+    public ScheduledTransaction schedule(@RequestBody ScheduledTransaction st) {
+        return facade.scheduleTransaction(st);
+    }
+
+    // Cancel Scheduled transaction
+    @PutMapping("/scheduled/{id}/cancel")
+    public void cancelScheduledTransaction(@PathVariable Long id) {
+        facade.cancelScheduledTransaction(id);
+    }
+
+    // --- Report endpoints ---
+    // Get daily reports
+    @GetMapping("/reports/daily")
+    public String getDailyReport() {
+        return facade.getDailyReport();
+    }
+
+    // Get summary reports
+    @GetMapping("/reports/summary")
+    public String getAccountSummaryReport() {
+        return facade.getAccountSummaryReport();
+    }
+
+    // Get audit log
+    @GetMapping("/reports/audit")
+    public String getAuditLog() {
+        return facade.getAuditLog();
+    }
+}
