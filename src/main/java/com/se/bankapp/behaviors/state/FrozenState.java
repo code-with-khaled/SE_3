@@ -1,17 +1,12 @@
-package com.se.bankapp.states;
+package com.se.bankapp.behaviors.state;
 
 import com.se.bankapp.models.Account;
 import com.se.bankapp.models.AccountState;
 
 public class FrozenState implements AccountStateBehavior {
     @Override
-    public void deposit(Account account, double amount) {
-        account.setBalance(account.getBalance() + amount);
-    }
-
-    @Override
-    public void withdraw(Account account, double amount) {
-        throw new IllegalStateException("Withdrawals not allowed on frozen accounts");
+    public void ensureAllowed(Account acc) {
+        throw new IllegalStateException("Account is frozen, operations not allowed");
     }
 
     @Override

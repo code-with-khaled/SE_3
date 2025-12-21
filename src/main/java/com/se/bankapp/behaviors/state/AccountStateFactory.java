@@ -1,7 +1,6 @@
-package com.se.bankapp.services;
+package com.se.bankapp.behaviors.state;
 
 import com.se.bankapp.models.AccountState;
-import com.se.bankapp.states.*;
 
 public class AccountStateFactory {
     public static AccountStateBehavior getBehavior(AccountState state) {

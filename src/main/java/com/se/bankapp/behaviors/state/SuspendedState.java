@@ -1,17 +1,12 @@
-package com.se.bankapp.states;
+package com.se.bankapp.behaviors.state;
 
 import com.se.bankapp.models.Account;
 import com.se.bankapp.models.AccountState;
 
-public class ClosedState implements AccountStateBehavior {
+public class SuspendedState implements AccountStateBehavior {
     @Override
-    public void deposit(Account account, double amount) {
-        throw new IllegalStateException("Account is closed");
-    }
-
-    @Override
-    public void withdraw(Account account, double amount) {
-        throw new IllegalStateException("Account is closed");
+    public void ensureAllowed(Account acc) {
+        throw new IllegalStateException("Account is suspended, operations not allowed");
     }
 
     @Override
@@ -21,12 +16,12 @@ public class ClosedState implements AccountStateBehavior {
 
     @Override
     public void suspend(Account acc) {
-        acc.setState(AccountState.SUSPENDED);
+        /* already suspended */
     }
 
     @Override
     public void close(Account acc) {
-        /* already closed */
+        acc.setState(AccountState.CLOSED);
     }
 
     @Override

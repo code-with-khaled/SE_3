@@ -1,20 +1,12 @@
-package com.se.bankapp.states;
+package com.se.bankapp.behaviors.state;
 
 import com.se.bankapp.models.Account;
 import com.se.bankapp.models.AccountState;
 
 public class ActiveState implements AccountStateBehavior {
     @Override
-    public void deposit(Account account, double amount) {
-        account.setBalance(account.getBalance() + amount);
-    }
-
-    @Override
-    public void withdraw(Account account, double amount) {
-        if (account.getBalance() < amount) {
-            throw new IllegalStateException("Insufficient balance");
-        }
-        account.setBalance(account.getBalance() - amount);
+    public void ensureAllowed(Account acc) {
+        /* Active accounts are always allowed */
     }
 
     @Override

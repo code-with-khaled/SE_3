@@ -3,6 +3,8 @@ package com.se.bankapp.services;
 import com.se.bankapp.approval.ApprovalChainBuilder;
 import com.se.bankapp.approval.ApprovalHandler;
 import com.se.bankapp.approval.TransactionApprovalRequest;
+import com.se.bankapp.behaviors.state.AccountStateFactory;
+import com.se.bankapp.behaviors.type.AccountTypeFactory;
 import com.se.bankapp.decorators.PremiumAccountDecorator;
 import com.se.bankapp.factories.AccountCreator;
 import com.se.bankapp.factories.AccountFactory;
@@ -11,7 +13,8 @@ import com.se.bankapp.models.AccountType;
 import com.se.bankapp.models.TransactionRecord;
 import com.se.bankapp.repositories.AccountRepository;
 import com.se.bankapp.repositories.TransactionRecordRepository;
-import com.se.bankapp.states.AccountStateBehavior;
+import com.se.bankapp.behaviors.state.AccountStateBehavior;
+import com.se.bankapp.behaviors.type.AccountTypeBehavior;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -59,8 +62,11 @@ public class AccountService {
         chain.handle(request);
 
         // Execute if approved
-        AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
-        behavior.deposit(acc, amount);
+        AccountStateBehavior stateBehavior = AccountStateFactory.getBehavior(acc.getState());
+        stateBehavior.ensureAllowed(acc);
+
+        AccountTypeBehavior typeBehavior = AccountTypeFactory.getBehavior(acc.getType());
+        typeBehavior.deposit(acc, amount);
 
         txRepo.save(new TransactionRecord(acc.getId(), "DEPOSIT", amount));
 
@@ -79,8 +85,11 @@ public class AccountService {
         chain.handle(request);
 
         // Execute if approved
-        AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
-        behavior.withdraw(acc, amount);
+        AccountStateBehavior stateBehavior = AccountStateFactory.getBehavior(acc.getState());
+        stateBehavior.ensureAllowed(acc);
+
+        AccountTypeBehavior typeBehavior = AccountTypeFactory.getBehavior(acc.getType());
+        typeBehavior.withdraw(acc, amount);
 
         txRepo.save(new TransactionRecord(acc.getId(), "WITHDRAW", amount));
 
@@ -101,11 +110,15 @@ public class AccountService {
         chain.handle(request);
 
         // State checks
-        AccountStateBehavior fromBehavior = AccountStateFactory.getBehavior(from.getState());
-        AccountStateBehavior toBehavior = AccountStateFactory.getBehavior(to.getState());
+        AccountStateBehavior fromStateBehavior = AccountStateFactory.getBehavior(from.getState());
+        AccountStateBehavior toStateBehavior = AccountStateFactory.getBehavior(to.getState());
+        fromStateBehavior.ensureAllowed(from);
+        toStateBehavior.ensureAllowed(to);
 
-        fromBehavior.withdraw(from, amount);
-        toBehavior.deposit(to, amount);
+        AccountTypeBehavior fromTypeBehavior = AccountTypeFactory.getBehavior(from.getType());
+        AccountTypeBehavior toTypeBehavior = AccountTypeFactory.getBehavior(to.getType());
+        fromTypeBehavior.withdraw(from, amount);
+        toTypeBehavior.deposit(to, amount);
 
         repo.save(from);
         repo.save(to);
