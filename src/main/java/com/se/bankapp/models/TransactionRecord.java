@@ -29,10 +29,27 @@ public class TransactionRecord {
         this.amount = amount;
     }
 
-    // Getters
+    // --- Getters ---
     public Long getId() { return id; }
     public Long getAccountId() { return accountId; }
     public String getType() { return type; }
     public double getAmount() { return amount; }
     public Instant getCreatedAt() { return createdAt; }
+
+    // --- Setters ---
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 }

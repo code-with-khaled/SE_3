@@ -16,7 +16,7 @@ public class BankController {
         this.facade = facade;
     }
 
-    // Accounts endpoints
+    // --- Accounts endpoints ---
     // Create account
     @PostMapping("/accounts")
     public Account createAccount(@RequestParam String type, @RequestParam double balance) {
@@ -91,7 +91,7 @@ public class BankController {
         return facade.getHistory(id);
     }
 
-    // Group endpoints
+    // --- Group endpoints ---
     // Create group
     @PostMapping("/groups")
     public AccountGroup createGroup(@RequestParam String name, @RequestBody List<Long> accountIds) {
@@ -116,17 +116,20 @@ public class BankController {
         return facade.withdrawGroup(groupId, amount);
     }
 
-    // Tickets endpoints
+    // --- Tickets endpoints ---
+    // Create ticket
     @PostMapping("/tickets")
     public SupportTicket createTicket(@RequestParam Long accountId, @RequestParam String subject, @RequestParam String description) {
         return facade.createTicket(accountId, subject, description);
     }
 
+    // Get tickets
     @GetMapping("/tickets/{accountId}")
     public List<SupportTicket> getTickets(@PathVariable Long accountId) {
         return facade.getTickets(accountId);
     }
 
+    // Advance ticket
     @PostMapping("/tickets/{ticketId}/advance")
     public SupportTicket advanceTicket(@PathVariable Long ticketId) {
         return facade.advanceTicket(ticketId);

@@ -33,7 +33,9 @@ public class AccountService {
     public Account create(AccountType type, double balance) {
         AccountCreator creator = AccountFactory.getCreator(type);
         Account acc = creator.create(balance);
+
         acc = repo.save(acc);
+
         txRepo.save(new TransactionRecord(acc.getId(), "CREATE", balance));
 
         notificationService.notify(acc, "CREATE", balance);
@@ -59,6 +61,7 @@ public class AccountService {
         // Execute if approved
         AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
         behavior.deposit(acc, amount);
+
         txRepo.save(new TransactionRecord(acc.getId(), "DEPOSIT", amount));
 
         notificationService.notify(acc, "DEPOSIT", amount);
@@ -78,6 +81,7 @@ public class AccountService {
         // Execute if approved
         AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
         behavior.withdraw(acc, amount);
+
         txRepo.save(new TransactionRecord(acc.getId(), "WITHDRAW", amount));
 
         notificationService.notify(acc, "WITHDRAW", amount);
@@ -119,7 +123,9 @@ public class AccountService {
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));
         AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
         behavior.freeze(acc);
+
         repo.save(acc);
+
         notificationService.notify(acc, "STATE_CHANGE", 0);
         return acc;
     }
@@ -129,7 +135,9 @@ public class AccountService {
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));
         AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
         behavior.suspend(acc);
+
         repo.save(acc);
+
         notificationService.notify(acc, "STATE_CHANGE", 0);
         return acc;
     }
@@ -139,7 +147,9 @@ public class AccountService {
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));
         AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
         behavior.activate(acc);
+
         repo.save(acc);
+
         notificationService.notify(acc, "STATE_CHANGE", 0);
         return acc;
     }
@@ -149,7 +159,9 @@ public class AccountService {
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));
         AccountStateBehavior behavior = AccountStateFactory.getBehavior(acc.getState());
         behavior.close(acc);
+
         repo.save(acc);
+
         notificationService.notify(acc, "STATE_CHANGE", 0);
         return acc;
     }
@@ -171,7 +183,9 @@ public class AccountService {
     public Account upgradeToPremium(long id) {
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));
         acc.setPremium(true);
+
         repo.save(acc);
+
         notificationService.notify(acc, "UPGRADED_TO_PREMIUM", 0);
         return acc;
     }

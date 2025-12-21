@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 public class SupportTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private long accountId;
+    private Long accountId;
     private String subject;
     private String description;
 
