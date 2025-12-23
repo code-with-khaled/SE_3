@@ -22,6 +22,9 @@ class BankControllerTest {
     @MockitoBean
     private BankingFacade facade;
 
+    @MockitoBean
+    private org.springframework.cache.CacheManager cacheManager;
+
     @Test
     void createAccount_returnsAccount() throws Exception {
         Account acc = new Account(AccountType.SAVINGS, 100.0);

@@ -23,6 +23,9 @@ class ScheduledTransactionControllerTest {
     @MockitoBean
     private ScheduledTransactionService service;
 
+    @MockitoBean
+    private org.springframework.cache.CacheManager cacheManager;
+
     @Test
     void scheduleTransaction_returnsScheduledTransaction() throws Exception {
         ScheduledTransaction st = new ScheduledTransaction(1L);

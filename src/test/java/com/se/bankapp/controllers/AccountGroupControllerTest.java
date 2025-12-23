@@ -25,6 +25,9 @@ class AccountGroupControllerTest {
     @MockitoBean
     private AccountGroupService groupService;
 
+    @MockitoBean
+    private org.springframework.cache.CacheManager cacheManager;
+
     @Test
     void createGroup_returnsGroup() throws Exception {
         AccountGroup group = new AccountGroup();

@@ -24,6 +24,9 @@ class SupportControllerTest {
     @MockitoBean
     private SupportService service;
 
+    @MockitoBean
+    private org.springframework.cache.CacheManager cacheManager;
+
     @Test
     void createTicket_returnsTicket() throws Exception {
         SupportTicket ticket = new SupportTicket();

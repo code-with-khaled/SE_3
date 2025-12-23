@@ -20,6 +20,9 @@ class ReportControllerTest {
     @MockitoBean
     private ReportService service;
 
+    @MockitoBean
+    private org.springframework.cache.CacheManager cacheManager;
+
     @Test
     void getDailyReport_returnsString() throws Exception {
         when(service.getDailyReport()).thenReturn("Daily report content");

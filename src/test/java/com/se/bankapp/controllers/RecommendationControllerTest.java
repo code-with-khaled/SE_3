@@ -20,6 +20,9 @@ class RecommendationControllerTest {
     @MockitoBean
     private RecommendationService service;
 
+    @MockitoBean
+    private org.springframework.cache.CacheManager cacheManager;
+
     @Test
     void getRecommendations_returnsString() throws Exception {
         when(service.generateRecommendation(1L)).thenReturn("Save more, spend less!");
