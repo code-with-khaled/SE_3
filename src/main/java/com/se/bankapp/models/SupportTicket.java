@@ -27,7 +27,7 @@ public class SupportTicket {
     }
 
     // --- GETTERS ---
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

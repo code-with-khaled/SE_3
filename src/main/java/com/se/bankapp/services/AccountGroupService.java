@@ -1,5 +1,7 @@
 package com.se.bankapp.services;
 
+import com.se.bankapp.composites.AccountGroupComponent;
+import com.se.bankapp.composites.SingleAccountComponent;
 import com.se.bankapp.models.Account;
 import com.se.bankapp.models.AccountGroup;
 import com.se.bankapp.repositories.AccountGroupRepository;
@@ -41,10 +43,13 @@ public class AccountGroupService {
     public List<Account> depositToGroup(Long groupId, double amount) {
         AccountGroup group = groupRepo.findById(groupId)
                 .orElseThrow(() -> new NoSuchElementException("Group not found"));
-        double split = amount / group.getMembers().size();
+
+        AccountGroupComponent comp = new AccountGroupComponent();
         for (Account acc : group.getMembers()) {
-            accountService.deposit(acc.getId(), split);
+            comp.add(new SingleAccountComponent(acc, accountService));
         }
+        comp.deposit(amount);
+
         return group.getMembers();
     }
 
@@ -52,10 +57,13 @@ public class AccountGroupService {
     public List<Account> withdrawFromGroup(Long groupId, double amount) {
         AccountGroup group = groupRepo.findById(groupId)
                 .orElseThrow(() -> new NoSuchElementException("Group not found"));
-        double split = amount / group.getMembers().size();
+
+        AccountGroupComponent comp = new AccountGroupComponent();
         for (Account acc : group.getMembers()) {
-            accountService.withdraw(acc.getId(), split);
+            comp.add(new SingleAccountComponent(acc, accountService));
         }
+        comp.withdraw(amount);
+
         return group.getMembers();
     }
 }

@@ -26,6 +26,7 @@ public class ScheduledTransaction {
 
     // --- Constructors ---
     public ScheduledTransaction() {}
+    public ScheduledTransaction(Long id) { this.id = id; }
 
     // --- Getters ---
     public Long getId() {

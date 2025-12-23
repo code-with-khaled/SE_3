@@ -33,6 +33,11 @@ public class Account {
         this.type = type;
         this.balance = balance;
     }
+    public Account(Long id, AccountType type, double balance) {
+        this.id = id;
+        this.type = type;
+        this.balance = balance;
+    }
 
     @PostLoad
     private void attachStrategy() {
@@ -44,7 +49,7 @@ public class Account {
         }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
