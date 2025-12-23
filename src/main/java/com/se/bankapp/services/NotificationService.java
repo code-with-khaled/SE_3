@@ -5,6 +5,7 @@ import com.se.bankapp.observers.AccountObserver;
 import com.se.bankapp.observers.EmailObserver;
 import com.se.bankapp.observers.InAppObserver;
 import com.se.bankapp.observers.SmsObserver;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class NotificationService {
         observers.remove(o);
     }
 
+    @Async
     public void notify(Account account, String action, double amount) {
         for (AccountObserver o : observers) {
             o.update(account, action, amount);

@@ -3,6 +3,7 @@ package com.se.bankapp.services;
 import com.se.bankapp.templates.AccountSummaryReport;
 import com.se.bankapp.templates.AuditLogReport;
 import com.se.bankapp.templates.DailyTransactionReport;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,9 @@ public class ReportService {
     }
 
     // Get daily report
+    @Cacheable(value = "dailyReports", key = "T(java.time.LocalDate).now()")
     public String getDailyReport() {
+        System.out.println("Generating daily report...");
         return dailyTransactionReport.generateReport();
     }
 

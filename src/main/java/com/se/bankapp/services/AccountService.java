@@ -16,6 +16,7 @@ import com.se.bankapp.repositories.TransactionRecordRepository;
 import com.se.bankapp.behaviors.state.AccountStateBehavior;
 import com.se.bankapp.behaviors.type.AccountTypeBehavior;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class AccountService {
         this.notificationService = notificationService;
     }
 
+    @CacheEvict(value = "dailyReports", key = "T(java.time.LocalDate).now()")
     public Account create(AccountType type, double balance) {
         AccountCreator creator = AccountFactory.getCreator(type);
         Account acc = creator.create(balance);
@@ -52,6 +54,7 @@ public class AccountService {
     }
 
     @Transactional
+    @CacheEvict(value = "dailyReports", key = "T(java.time.LocalDate).now()")
     public Account deposit(long id, double amount) {
         if (amount <= 0) throw new IllegalArgumentException("Amount must be positive");
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));
@@ -75,6 +78,7 @@ public class AccountService {
     }
 
     @Transactional
+    @CacheEvict(value = "dailyReports", key = "T(java.time.LocalDate).now()")
     public Account withdraw(long id, double amount) {
         if (amount <= 0) throw new IllegalArgumentException("Amount must be positive");
         Account acc = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Account not found"));

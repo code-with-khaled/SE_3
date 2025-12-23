@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(indexes = {
+        @Index(name = "idx_account_id", columnList = "accountId"),
+        @Index(name = "idx_created_at", columnList = "createdAt")
+})
 public class TransactionRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
